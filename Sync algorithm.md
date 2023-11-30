@@ -4,7 +4,8 @@ algorithm that also uses terms (epochs) and stores data in a distribution log.
 However, unlike Raft, it synchronizes the distribution log every time a new 
 leader appears.
 
-It could be usefull for systems with one-phase write, like this.
+It could be usefull for systems with one-phase write, like 
+[this](https://github.com/ymz-ncnk/distributed-key-value-database-design).
 
 ## Distributed Log
 Each node maintains its own log, which together make a distributed log.
