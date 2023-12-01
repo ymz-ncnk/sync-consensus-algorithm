@@ -1,7 +1,7 @@
 # Sync Consensus Algorithm
 At its core, this algorithm is very similar to Raft, i.e. it is a leader-based 
-algorithm that also uses terms (epochs) and stores data in a distribution log.
-However, unlike Raft, it synchronizes the distribution log every time a new 
+algorithm that also uses terms (epochs) and stores data in a distributed log.
+However, unlike Raft, it synchronizes the distributed log every time a new 
 leader appears.
 
 It could be usefull for systems with one-phase write, like 
@@ -74,7 +74,7 @@ completed and no interskip transactions. At the same time, nodes from previous
 epochs cannot trust their completed and interrupted transactions, so they have 
 to reload the former and delete the latter.
 
-And finally, to speed up the synchronization process, we can resort to some 
+Finally, to speed up the synchronization process, we can resort to some 
 optimizations, for example, try to minimize the number of insteskips in the sync 
 basis.
 
@@ -110,7 +110,7 @@ continue interrupted transactions and start new ones.
 ## Write Transaction
 When a leader receives a write request from a client, it starts a write
 transaction:
-- Makes a transaction ID - its a serial number of the next log item.
+- Makes a transaction ID - its a serial number of the corresponding log item.
 - Sends the write request with the transaction ID to all its followers.
 - Waits for the write request to be executed on the majority of nodes.
 - After that, the write transaction will be considered successful.
