@@ -1,4 +1,4 @@
-# Sync Algorithm
+# Sync Consensus Algorithm
 At its core, this algorithm is very similar to Raft, i.e. it is a leader-based 
 algorithm that also uses terms (epochs) and stores data in a distribution log.
 However, unlike Raft, it synchronizes the distribution log every time a new 
@@ -42,7 +42,8 @@ Here are some additional definitions we will use:
   used for synchronization process. It can be represented as a map of 
   intervals `node1: [{1,100}, {105, 200}], node2: {1, 200}, ...`
 
-There are 3 types of preliminary transactions for a new manager:
+There are 3 types of preliminary [transactions](#write-transaction) for a new 
+manager:
 - Completed - is a transaction that has been executed on all nodes of the sync 
   quorum.
 - Interrupted - is a transaction that was executed on several nodes of a sync 
