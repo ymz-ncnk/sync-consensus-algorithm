@@ -71,8 +71,8 @@ number.
 
 Second, a node is synchronized with the sync basis only when it has all 
 completed and no interskip transactions. At the same time, nodes from previous 
-epochs cannot trust their completed and interrupted transactions, so they have 
-to reload the former and delete the latter.
+epochs cannot trust their completed and interrupted transactions (that are after
+checkpoint), so they have to reload the former and delete the latter.
 
 Finally, to speed up the synchronization process, we can resort to some 
 optimizations, for example, try to minimize the number of insteskips in the sync 
