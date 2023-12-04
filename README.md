@@ -2,8 +2,8 @@
 Hi! 
 
 Not so long ago I became interested in distributed systems, so much that 
-invented, as for me, pretty interesting consensus algorithm called Sync (also 
-the [distributed key-value database design](https://github.com/ymz-ncnk/distributed-key-value-database-design) 
+invented pretty interesting, as for me, consensus algorithm called Sync (also 
+the [distributed key-value database](https://github.com/ymz-ncnk/distributed-key-value-database-design) 
 based on it). And I would be very interested to hear comments or recommendations 
 from more experienced people in this area. But please do not look at it with too 
 serious eyes, at this stage it is just an idea.
