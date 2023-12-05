@@ -13,7 +13,7 @@ distributed log and only then goes to the state machine. This algorithm is not
 about this (although it can be adapted to such a scenario), it is more about 
 systems in which data is stored in the log and state machine simultaneously. 
 
-An example of such a system, can be fount in the
+An example of such a system, can be found in the
 [distributed key-value database](https://github.com/ymz-ncnk/distributed-key-value-database-design), 
 which is a logical extension of this algorithm and offers a new model of 
 consistency.
