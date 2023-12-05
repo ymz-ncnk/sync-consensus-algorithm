@@ -15,9 +15,10 @@ systems in which data is stored in the log and state machine simultaneously.
 
 An example of such a system, can be found in the
 [distributed key-value database](https://github.com/ymz-ncnk/distributed-key-value-database-design), 
-which is a logical extension of this algorithm and offers a new model of 
-consistency.
+which is a logical extension of this algorithm and offers a new consistency 
+model.
 
-Finally, there is a 
-[distributed database of aggregates](https://github.com/ymz-ncnk/distributed-database-of-aggregates-design) 
-that shows how all these concepts can work on a large scale.
+This key-value database, in turn, can be used as a building block for a more 
+complex [system](https://github.com/ymz-ncnk/distributed-database-of-aggregates-design) 
+that, in addition to storing data, offers search and processing capabilities, 
+supports distributed transactions, and can scale to multiple regions.
