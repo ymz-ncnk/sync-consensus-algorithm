@@ -4,9 +4,7 @@ Hi!
 Not so long ago I became interested in distributed systems, so much that 
 developed a new consensus algorithm called Sync (also the 
 [distributed key-value database](https://github.com/ymz-ncnk/distributed-key-value-database-design) 
-based on it). And it would be great to get feedback from more experienced people
-in this area, I'm open to your advice. But please do not look at it with too 
-serious eyes, at this stage it is just an idea.
+based on it).
 
 In traditional distributed systems, data is first reliably stored in the 
 distributed log and only then goes to the state machine. This algorithm is not 
@@ -22,3 +20,7 @@ This key-value database, in turn, can be used as a building block for a more
 complex [system](https://github.com/ymz-ncnk/distributed-database-of-aggregates-design) 
 that, in addition to storing data, offers search and processing capabilities, 
 supports distributed transactions, and can scale to multiple regions.
+
+For now all of this is just an idea, so do not look at it with too serious eyes.
+And one more thing, if you have any thoughts or recommendations, I'm open to the
+conversation.
