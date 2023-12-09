@@ -38,9 +38,10 @@ Here are some additional definitions we will use:
 - Log tail - all log items after the last checkpoint.
 - Sync quorum - represents the nodes that participate in the creation of the 
   sync basis.
-- Sync basis - is a union of several log tails (starts from the last checkpoint)
-  used for synchronization process. It can be represented as a map of 
-  intervals `node1: [{1,100}, {105, 200}], node2: {1, 200}, ...`
+- Sync basis - is a union of several log tails (starts from the largest 
+  checkpoint) used for synchronization process. It can be represented as a map 
+  of intervals `node1: [[1..100], [105..200]], node2: [1.. 200], ...`, where
+  each first interval starts with the node's checkpoint.
 
 There are 3 types of preliminary [transactions](#write-transaction) for a new 
 manager:
@@ -77,6 +78,29 @@ checkpoint), so they have to reload the former and delete the latter.
 Finally, to speed up the synchronization process, we can resort to some 
 optimizations, for example, try to minimize the number of insteskips in the sync 
 basis.
+
+### Process
+We will call a follower from the last epoch, which has the sync basis checkpoint 
+as a ready follower. The ready follower does not need to synchronize if it is in 
+the sync quorum. Moreover, if the sync quorum is filled with only ready 
+followers, the manager can skip the synchronization phase altogether.
+
+To all other followers, the manager sends the sync basis. It allows a node to 
+receive data from different sources simultaneously during synchronization, 
+which can significantly speed up this process.
+
+#### Dynamic Sync Quorum
+Thus, if we have most of the live nodes from the last epoch and they are all in 
+the sync quorum, the manager will most likely be able to quickly become a 
+leader. But that's if we're lucky, because many nodes from previous epochs can 
+randomly get into the sync quorum.
+
+In this case, when a ready follower appears, the manager can:
+1. Add it to the sync quorum instead of one of the not ready followers.
+2. Restart the synchronization process, i.e. re-create the sync basis and send 
+   it to all relevant nodes again.
+
+This algorithm can also significantly speed up the synchronization process.
 
 ## Saving of an Epoch Number
 Once the manager has synchronized most of the nodes, it moves on to the next 
