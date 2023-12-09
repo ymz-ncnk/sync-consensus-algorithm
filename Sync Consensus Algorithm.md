@@ -142,8 +142,3 @@ transaction:
 ## Saving of checkpoints
 After the leader has completed several write transactions, it marks the last one
 as a checkpoint, which than sends to the followers.
-
-## Left Without Definition
-Some details remain undefined:
-- Leader election.
-- Synchronization process.
