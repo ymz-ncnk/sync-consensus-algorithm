@@ -6,5 +6,5 @@ Here you can find two consensus algorithms:
 	block for a more complex [system](https://github.com/ymz-ncnk/distributed-database-of-aggregates-design) that, in addition to storing data, offers
 	search and processing capabilities, supports distributed transactions, and can
 	scale to multiple regions.
-- [Syncfull]((https://github.com/ymz-ncnk/sync-consensus-algorithm/blob/main/Syncfull%20Consensus%20Algorithm.md)) - is an extension of the Sync algorithm, designed for systems that 
+- [Syncfull](https://github.com/ymz-ncnk/sync-consensus-algorithm/blob/main/Syncfull%20Consensus%20Algorithm.md) - is an extension of the Sync algorithm, designed for systems that 
   use a state machine in addition to the distributed log.
