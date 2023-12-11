@@ -10,8 +10,7 @@ Thanks to this, we can design, for example, a fast [key-value database](https://
 quickly process both write and read requests.
 
 Also, the Sync algorithm does not contain such a thing as a state machine. This 
-term can be found in the [Syncfull](https://github.com/ymz-ncnk/sync-consensus-algorithm/blob/main/Syncfull%20Consensus%20Algorithm.md) algorithm, which is an extension of Sync: 
-`Sync + state machine = Syncfull`
+term can be found in the [Syncfull](https://github.com/ymz-ncnk/sync-consensus-algorithm/blob/main/Syncfull%20Consensus%20Algorithm.md) algorithm, which is an extension of Sync: `Sync + state machine = Syncfull`.
 
 ## Distributed Log
 Each node maintains its own log, which together make a distributed log.
