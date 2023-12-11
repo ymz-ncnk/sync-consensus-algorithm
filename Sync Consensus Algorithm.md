@@ -1,11 +1,17 @@
 # Sync Consensus Algorithm
 At its core, this algorithm is very similar to Raft, i.e. it is a leader-based 
-algorithm that also uses terms (epochs) and stores data in a distributed log.
+algorithm that also uses terms (epochs) and stores data in a distributed log. 
 However, unlike Raft, it synchronizes the distributed log every time a new 
-leader appears.
+leader appears. Another interesting feature it provides is the ability to 
+simultaneously write several log items using multiple connections, which can 
+significantly increase the speed of the distributed system.
 
-It could be usefull for systems with one-phase write, like 
-[this](https://github.com/ymz-ncnk/distributed-key-value-database-design).
+Thanks to this, we can design, for example, a fast [key-value database](https://github.com/ymz-ncnk/distributed-key-value-database-design) that can 
+quickly process both write and read requests.
+
+Also, the Sync algorithm does not contain such a thing as a state machine. This 
+term can be found in the [Syncfull](https://github.com/ymz-ncnk/sync-consensus-algorithm/blob/main/Syncfull%20Consensus%20Algorithm.md) algorithm, which is an extension of Sync: 
+`Sync + state machine = Syncfull`
 
 ## Distributed Log
 Each node maintains its own log, which together make a distributed log.
@@ -65,29 +71,29 @@ either be executed or be canceled when a new epoch is entered (i.e. when a new
 leader appears).
 
 ### More Details
-First of all, we must say, that in a sync quorum, we can have nodes from 
-different epochs. But when building the sync basis, we will only be interested 
-in the nodes from the most recent epoch, i.e. the nodes with the highest epoch 
+First of all, it should be noted that the sync quorum can include nodes from 
+different epochs. However, when building the sync basis, we will only be 
+interested in nodes from the last epoch, i.e. nodes with the highest epoch 
 number.
 
 Second, a node is synchronized with the sync basis only when it has all 
 completed and no interskip transactions. At the same time, nodes from previous 
-epochs cannot trust their completed and interrupted transactions (that are after
+epochs cannot trust their completed and interrupted transactions (that are after 
 checkpoint), so they have to reload the former and delete the latter.
 
 Finally, to speed up the synchronization process, we can resort to some 
 optimizations, for example, try to minimize the number of insteskips in the sync 
 basis.
 
-### Process
+### Synchronization Process
 We will call a follower from the last epoch, which has the sync basis checkpoint 
 as a ready follower. The ready follower does not need to synchronize if it is in 
 the sync quorum. Moreover, if the sync quorum is filled with only ready 
 followers, the manager can skip the synchronization phase altogether.
 
-To all other followers, the manager sends the sync basis. It allows a node to 
-receive data from different sources simultaneously during synchronization, 
-which can significantly speed up this process.
+To all other followers, the manager sends the sync basis. Which allows a node to 
+receive data from different sources simultaneously during synchronization, that 
+can significantly speed up this process.
 
 #### Dynamic Sync Quorum
 Thus, if we have most of the live nodes from the last epoch and they are all in 
@@ -107,10 +113,10 @@ Once the manager has synchronized most of the nodes, it moves on to the next
 stage - reliably stores its epoch number and becomes a leader. This is done in
 three steps:
 1. First, the manager sends own epoch number to the synchronized nodes as an 
-   pre_epoch value.
-2. After the pre_epoch is saved on the majority of nodes, it sends to them the 
-   same data, but now as an epoch value.
-4. After the epoch is saved on the majority of nodes, the manager becomes the
+   `pre_epoch` value.
+2. After the `pre_epoch` is saved on the majority of nodes, it sends to them the 
+   same data, but now as an `epoch` value.
+4. After the `epoch` is saved on the majority of nodes, the manager becomes the
    leader.
 
 But how does the manager know which epoch it belongs to? The manager's epoch 
