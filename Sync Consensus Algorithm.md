@@ -45,8 +45,8 @@ Here are some additional definitions we will use:
 - Sync quorum - represents the nodes that participate in the creation of the 
   sync basis.
 - Sync basis - is a union of several log tails (starts from the largest 
-  checkpoint) used for synchronization process. It can be represented as a map 
-  of intervals `node1: [[1..100], [105..200]], node2: [1.. 200], ...`, where
+  checkpoint) used for the synchronization process. It can be represented as a 
+  map of intervals `node1: [[1..100], [105..200]], node2: [1.. 200], ...`, where
   each first interval starts with the node's checkpoint.
 
 There are 3 types of preliminary [transactions](#write-transaction) for a new 
@@ -98,11 +98,11 @@ can significantly speed up this process.
 #### Dynamic Sync Quorum
 Thus, if we have most of the live nodes from the last epoch and they are all in 
 the sync quorum, the manager will most likely be able to quickly become a 
-leader. But that's if we're lucky, because many nodes from previous epochs can 
+leader. But that's if we're lucky because many nodes from previous epochs can 
 randomly get into the sync quorum.
 
 In this case, when a ready follower appears, the manager can:
-1. Add it to the sync quorum instead of one of the not ready followers.
+1. Add it to the sync quorum instead of one of the not-ready followers.
 2. Restart the synchronization process, i.e. re-create the sync basis and send 
    it to all relevant nodes again.
 
@@ -112,11 +112,11 @@ This algorithm can also significantly speed up the synchronization process.
 Once the manager has synchronized most of the nodes, it moves on to the next 
 stage - reliably stores its epoch number and becomes a leader. This is done in
 three steps:
-1. First, the manager sends own epoch number to the synchronized nodes as an 
+1. First, the manager sends its epoch number to the synchronized nodes as an 
    `pre_epoch` value.
 2. After the `pre_epoch` is saved on the majority of nodes, it sends to them the 
    same data, but now as an `epoch` value.
-4. After the `epoch` is saved on the majority of nodes, the manager becomes the
+3. After the `epoch` is saved on the majority of nodes, the manager becomes the
    leader.
 
 But how does the manager know which epoch it belongs to? The manager's epoch 
@@ -140,7 +140,7 @@ continue interrupted transactions and start new ones.
 ## Write Transaction
 When a leader receives a write request from a client, it starts a write
 transaction:
-- Makes a transaction ID - its a serial number of the corresponding log item.
+- Makes a transaction ID - it's a serial number of the corresponding log item.
 - Sends the write request with the transaction ID to all its followers.
 - Waits for the write request to be executed on the majority of nodes.
 - After that, the write transaction will be considered successful.
