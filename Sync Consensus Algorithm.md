@@ -25,11 +25,11 @@ Here are some definitions we will use:
 - Epoch - an integer being always increased for every next leader. It is present 
   on each node, so we can say that a node belongs to a certain epoch.
 
-During the same period of time, several nodes can be candidates, but only one of
-them - the node with the largest number of followers - will become the manager.
-The main goal of the manager is to synchronize the cluster, i.e. to make sure 
-that most nodes have the same data. After that, the manager reliably stores its 
-epoch number in the cluster and, if successful, finally becomes the leader.
+During the same period, several nodes can be candidates, but only one of them - 
+the node with the largest number of followers - will become the manager. The 
+main goal of the manager is to synchronize the cluster, i.e. to make sure that 
+most nodes have the same data. After that, the manager reliably stores its epoch 
+number in the cluster and, if successful, finally becomes the leader.
 
 ## Manager Election
 The algorithm can be any, and there are no restrictions on the node that can 
@@ -38,13 +38,13 @@ become a manager.
 ## Synchronization
 Here are some additional definitions we will use:
 - Successful write - when the write request was successfully executed on the 
-  nodes quorum.
+  quorum.
 - Checkpoint - is a log item, all previous items of which have been already
   successfully written.
 - Log tail - all log items after the last checkpoint.
 - Sync quorum - represents the nodes that participate in the creation of the 
   sync basis.
-- Sync basis - is a union of several log tails (starts from the largest 
+- Sync basis - is a union of several log tails (starting from the largest 
   checkpoint) used for the synchronization process. It can be represented as a 
   map of intervals `node1: [[1..100], [105..200]], node2: [1.. 200], ...`, where
   each first interval starts with the node's checkpoint.
@@ -55,16 +55,16 @@ manager:
   quorum.
 - Interrupted - is a transaction that was executed on several nodes of a sync 
   quorum.
-- Interskip (interrupted and skipped) - a transaction that did not get to any 
+- Interskip (interrupted and skipped) - a transaction that not gotten to any 
   node from the sync quorum. It can be identified, for example, by an empty 
   space in the log.
 
 While everything is more or less clear with completed and interskip 
-transactions, the processing of interrupted transactions is not so obvious. In 
-fact, the new manager does not know whether such a transaction was executed on 
-most nodes or not (a few of them may have simply did not get into the sync 
-quorum), therefore, it has no choice but to continue its execution. That's why
-sync basis is build as a union of the log tails.
+transactions, the processing of interrupted transactions is not so obvious. The 
+new manager does not know whether such a transaction was executed on most nodes 
+or not (a few of them may have simply did not get into the sync quorum), 
+therefore, it has no choice but to continue its execution. That's why the sync 
+basis is built as a union of the log tails.
 
 Taking all this into account, we can conclude that, a write transaction can 
 either be executed or be canceled when a new epoch is entered (i.e. when a new 
@@ -91,8 +91,8 @@ as a ready follower. The ready follower does not need to synchronize if it is in
 the sync quorum. Moreover, if the sync quorum is filled with only ready 
 followers, the manager can skip the synchronization phase altogether.
 
-To all other followers, the manager sends the sync basis. Which allows a node to 
-receive data from different sources simultaneously during synchronization, that 
+To all other followers, the manager sends the sync basis. This allows a node to 
+receive data from different sources simultaneously during synchronization, which 
 can significantly speed up this process.
 
 #### Dynamic Sync Quorum
@@ -112,9 +112,9 @@ This algorithm can also significantly speed up the synchronization process.
 Once the manager has synchronized most of the nodes, it moves on to the next 
 stage - reliably stores its epoch number and becomes a leader. This is done in
 three steps:
-1. First, the manager sends its epoch number to the synchronized nodes as an 
+1. First, the manager sends its epoch number to the synchronized nodes as a 
    `pre_epoch` value.
-2. After the `pre_epoch` is saved on the majority of nodes, it sends to them the 
+2. After the `pre_epoch` is saved on the majority of nodes, it sends them the 
    same data, but now as an `epoch` value.
 3. After the `epoch` is saved on the majority of nodes, the manager becomes the
    leader.
@@ -140,11 +140,11 @@ continue interrupted transactions and start new ones.
 ## Write Transaction
 When a leader receives a write request from a client, it starts a write
 transaction:
-- Makes a transaction ID - it's a serial number of the corresponding log item.
+- Makes a transaction ID - a serial number of the corresponding log item.
 - Sends the write request with the transaction ID to all its followers.
 - Waits for the write request to be executed on the majority of nodes.
 - After that, the write transaction will be considered successful.
 
 ## Saving of checkpoints
 After the leader has completed several write transactions, it marks the last one
-as a checkpoint, which than sends to the followers.
+as a checkpoint, which it than sends to the followers.
