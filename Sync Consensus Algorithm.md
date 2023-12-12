@@ -3,8 +3,9 @@ At its core, this algorithm is very similar to Raft, i.e. it is a leader-based
 algorithm that also uses terms (epochs) and stores data in a distributed log. 
 However, unlike Raft, it synchronizes the distributed log every time a new 
 leader appears. Another interesting feature it provides is the ability to 
-simultaneously write several log items using multiple connections, which can 
-significantly increase the speed of the distributed system.
+simultaneously write several log items (using multiple connections between the
+leader and follower), which can significantly increase the speed of the 
+distributed system.
 
 Thanks to this, we can design, for example, a fast [key-value database](https://github.com/ymz-ncnk/distributed-key-value-database-design) that can 
 quickly process both write and read requests.
