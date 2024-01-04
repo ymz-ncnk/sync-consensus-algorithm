@@ -7,13 +7,3 @@ to the log and states the following:
   apply all previous unapplied log items to the state machine.
 - The manager/leader sends a checkpoint after one or more consecutive successful 
   writes.
-
-## Strong Consistency (Draft)
-Strong consistency can be achieved as follows:
-- User read requests are processed by only one node - read node. The leader 
-  chooses it after synchronization.
-- The checkpoint is saved on the read node only after it has been saved on the 
-  quorum-1 nodes (otherwise, we will have to complete all interrupted 
-  transactions during synchronization). This guarantees the following property:
-  the checkpoint of each subsequent read node will always be >= than its 
-  predecessor.
