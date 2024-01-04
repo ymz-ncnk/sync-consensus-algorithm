@@ -17,3 +17,5 @@ Strong consistency can be achieved as follows:
   transactions during synchronization). This guarantees the following property:
   the checkpoint of each subsequent read node will always be >= than its 
   predecessor.
+- If a read node fails, the leader must wait until the current checkpoint is 
+  saved on the quorum nodes, and then select a new read node.
