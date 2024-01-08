@@ -106,11 +106,12 @@ Once the manager has synchronized most of the nodes, it moves on to the next
 stage — reliably stores its epoch number and becomes a leader. This is done in 
 three steps:
 1. First, the manager sends its epoch number to the synchronized nodes as a 
-   pre_epoch value
+   pre_epoch value.
 2. After the pre_epoch is saved on the majority of nodes, it sends to them the 
    same data, but now as an epoch value.
 3. After the epoch is saved on the majority of nodes, the manager becomes a 
    leader.
+
 In general, any node synchronized by the manager/leader will receive a 
 (pre_epoch, epoch) pair from it.
 
